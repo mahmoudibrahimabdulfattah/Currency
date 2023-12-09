@@ -1,4 +1,4 @@
-package com.example.currency.ui.fragments
+package com.example.currency.ui.fragments.convert
 
 import android.R
 import android.os.Bundle
