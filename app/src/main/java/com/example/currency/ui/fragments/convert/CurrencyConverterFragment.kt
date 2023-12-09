@@ -18,13 +18,13 @@ import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CurrencyConverterFragment @Inject constructor(
-    var binding: FragmentCurrencyConverterBinding,
-    val viewModel: CurrencyViewModel
-): Fragment() {
+class CurrencyConverterFragment : Fragment() {
+
+    private lateinit var binding: FragmentCurrencyConverterBinding
+    private val viewModel: CurrencyViewModel by viewModels()
+
 
     private val currencyCodes = arrayOf("USD", "EUR", "EGP", "JPY", "CAD", "AUD", "CHF", "CNY", "SEK", "NZD")
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
