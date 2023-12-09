@@ -7,44 +7,73 @@ import androidx.lifecycle.viewModelScope
 import com.example.currency.data.repository.CurrencyRepository
 import com.example.currency.data.model.CurrencyResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.IOException
 import javax.inject.Inject
 
-// CurrencyViewModel.kt
 @HiltViewModel
 class CurrencyViewModel @Inject constructor(private val repository: CurrencyRepository) : ViewModel() {
-    private val _rates = MutableLiveData<Map<String, Double>>()
-    val rates: LiveData<Map<String, Double>> get() = _rates
 
+    private val _currencyData = MutableLiveData<CurrencyResponse>()
+    val currencyData: LiveData<CurrencyResponse> get() = _currencyData
+
+    // Spinner selections
+    var fromCurrency: String = ""
+    var toCurrency: String = ""
+
+    // Amount entered by the user
+    var amount: Double = 0.0
+
+    // Result of the currency conversion
+    private val _conversionResult = MutableLiveData<Double>()
+    val conversionResult: LiveData<Double> get() = _conversionResult
+
+    // Error message
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
 
-    fun getLatestRates() {
-        viewModelScope.launch {
+    // Loading indicator
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> get() = _loading
+
+    // Function to fetch latest currency rates
+    fun fetchLatestRates(apiKey: String) {
+        _loading.postValue(true)
+
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = repository.getLatestRates()
-                if (response.isSuccessful && response.body()?.success == true) {
-                    _rates.value = response.body()?.rates
+                val response = repository.getLatestRates(apiKey)
+                _currencyData.postValue(response)
+
+                if (response.success) {
+                    _error.postValue("") // Clear previous error messages on success
                 } else {
-                    _error.value = "API Error: ${response.code()}"
+                    _error.postValue("Failed to fetch currency rates")
                 }
-            } catch (e: IOException) {
-                _error.value = "Network Error: ${e.message}"
+            } catch (e: Exception) {
+                _error.postValue("Failed to fetch currency rates")
+            } finally {
+                _loading.postValue(false)
             }
         }
     }
 
-    fun convertCurrency(amount: Double, fromCurrency: String, toCurrency: String): Double? {
-        val rates = _rates.value
-        if (rates != null) {
-            val fromRate = rates[fromCurrency]
-            val toRate = rates[toCurrency]
+    // Function to convert currency
+    fun convertCurrency() {
+        _loading.postValue(true)
 
-            if (fromRate != null && toRate != null) {
-                return amount * (toRate / fromRate)
-            }
+        val currencyRates = _currencyData.value?.rates
+
+        if (currencyRates != null && fromCurrency.isNotEmpty() && toCurrency.isNotEmpty()) {
+            val fromRate = currencyRates[fromCurrency] ?: 1.0
+            val toRate = currencyRates[toCurrency] ?: 1.0
+
+            val result = (amount / fromRate) * toRate
+            _conversionResult.postValue(result)
+        } else {
+            _error.postValue("Invalid conversion parameters")
         }
-        return null
+
+        _loading.postValue(false)
     }
 }

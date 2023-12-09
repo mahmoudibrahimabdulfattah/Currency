@@ -10,10 +10,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DetailsFragment : Fragment() {
-
-    @Inject
-    private lateinit var binding: FragmentDetailsBinding
+class DetailsFragment @Inject constructor(
+    var binding: FragmentDetailsBinding
+): Fragment() {
 
 
     override fun onCreateView(
