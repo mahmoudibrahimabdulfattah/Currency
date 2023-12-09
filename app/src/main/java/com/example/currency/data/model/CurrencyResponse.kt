@@ -1,6 +1,6 @@
 package com.example.currency.data.model
 
-data class ApiResponse(
+data class CurrencyResponse(
     val success: Boolean,
     val timestamp: Long,
     val base: String,

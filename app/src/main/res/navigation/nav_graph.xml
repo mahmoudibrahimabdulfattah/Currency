@@ -3,26 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
-
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.currency.ui.fragments.HomeFragment"
-        android:label="Home Fragment"
-        tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_homeFragment_to_currencyConverterFragment"
-            app:destination="@id/currencyConverterFragment" />
-    </fragment>
+    app:startDestination="@id/currencyConverterFragment">
 
     <fragment
         android:id="@+id/currencyConverterFragment"
         android:name="com.example.currency.ui.fragments.CurrencyConverterFragment"
         android:label="Currency Converter Fragment"
         tools:layout="@layout/fragment_currency_converter">
-        <action
-            android:id="@+id/action_currencyConverterFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
     </fragment>
 
 </navigation>

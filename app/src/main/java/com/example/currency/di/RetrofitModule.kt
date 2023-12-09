@@ -1,17 +1,18 @@
 package com.example.currency.di
 
-import com.example.currency.network.CurrencyApiService
+import com.example.currency.network.CurrencyApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.internal.managers.ApplicationComponentManager
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-@InstallIn(ApplicationComponentManager::class)
+@InstallIn(SingletonComponent::class)
 @Module
-class AppModule {
+object RetrofitModule {
+
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit {
@@ -23,7 +24,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): CurrencyApiService {
-        return retrofit.create(CurrencyApiService::class.java)
+    fun provideApiService(retrofit: Retrofit): CurrencyApi {
+        return retrofit.create(CurrencyApi::class.java)
     }
 }

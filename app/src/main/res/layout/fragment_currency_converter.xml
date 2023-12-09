@@ -1,57 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.example.currency.ui.CurrencyViewModel" />
-    </data>
+    <Spinner
+        android:id="@+id/spinnerFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".ui.fragments.CurrencyConverterFragment">
+    <Spinner
+        android:id="@+id/spinnerTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerFrom"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
 
-        <EditText
-            android:id="@+id/edtAmount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter amount" />
+    <EditText
+        android:id="@+id/editTextAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter Amount"
+        android:layout_below="@id/spinnerTo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:inputType="numberDecimal" />
 
-        <Spinner
-            android:id="@+id/spinnerFromCurrency"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@+array/currency_array"
-            android:prompt="@+string/select_currency" />
+    <Button
+        android:id="@+id/buttonConvert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Convert"
+        android:layout_below="@id/editTextAmount"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
 
-        <Spinner
-            android:id="@+id/spinnerToCurrency"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@+array/currency_array"
-            android:prompt="@+string/select_currency" />
+    <TextView
+        android:id="@+id/textViewResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Result"
+        android:layout_below="@id/buttonConvert"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
 
-        <Button
-            android:id="@+id/btnConvert"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Convert"
-            android:onClick="@{() -> viewModel.convertCurrency()}" />
-
-        <TextView
-            android:id="@+id/tvResult"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.result}" />
-
-        <TextView
-            android:id="@+id/tvError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.error}" />
-    </LinearLayout>
-</layout>
+    <!-- Add other UI components as needed -->
+</RelativeLayout>
